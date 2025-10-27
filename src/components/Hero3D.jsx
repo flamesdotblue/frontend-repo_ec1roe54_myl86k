@@ -1,65 +1,79 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Spline from '@splinetool/react-spline';
 import { motion } from 'framer-motion';
 
-const Hero3D = ({ onContactClick }) => {
+export default function Hero3D({ onContactClick, onProjectsClick }) {
+  const containerRef = useRef(null);
+
   return (
-    <section id="home" className="relative h-[90vh] w-full overflow-hidden bg-gradient-to-b from-zinc-900 via-black to-zinc-900 text-white">
+    <section ref={containerRef} id="home" className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* 3D Scene */}
       <div className="absolute inset-0">
-        <Spline scene="https://prod.spline.design/EF7JOSsHLk16Tlw9/scene.splinecode" style={{ width: '100%', height: '100%' }} />
+        <Spline scene="https://prod.spline.design/VJLoxp84lCdVfdZu/scene.splinecode" style={{ width: '100%', height: '100%' }} />
       </div>
 
-      {/* Soft gradient vignette overlay (non-blocking) */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(168,85,247,0.18),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(34,197,94,0.15),transparent_45%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.18),transparent_45%)]" />
+      {/* Soft vignette and grid overlays (non-blocking) */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(15,23,42,0)_0%,rgba(2,6,23,0.6)_70%,rgba(2,6,23,0.9)_100%)]"></div>
+      <div className="pointer-events-none absolute inset-0 [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[length:24px_24px]"></div>
 
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-6 text-center">
+      {/* Content */}
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 text-center">
+        <motion.span
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-4 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.2em] text-white/80 backdrop-blur"
+        >
+          Exploring Technology, Changing Lives
+        </motion.span>
+
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="font-mono text-3xl font-semibold tracking-tight sm:text-5xl md:text-6xl"
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="font-extrabold text-4xl leading-tight sm:text-5xl md:text-6xl"
         >
-          Gullapudi Samanya
+          Hi, I’m Gullapudi Samanya
         </motion.h1>
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.8 }}
-          className="mt-4 max-w-2xl text-sm text-zinc-300 sm:text-lg"
+          transition={{ duration: 0.7, delay: 0.35 }}
+          className="mt-4 max-w-3xl text-balance text-base text-white/80 sm:text-lg"
         >
-          Web Development • AI/ML • IoT • Assistive Technology
+          I build creative solutions across web, AI, and IoT that empower people and make an impact. This portfolio is an interactive showcase of my journey, my work, and my drive for innovation.
         </motion.p>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="mt-8 flex items-center gap-4"
+          transition={{ duration: 0.7, delay: 0.5 }}
+          className="mt-8 flex flex-wrap items-center justify-center gap-4"
         >
-          <a
-            href="#projects"
-            className="rounded-full bg-white/10 px-6 py-3 text-sm font-medium text-white backdrop-blur transition hover:bg-white/20"
+          <button
+            onClick={onProjectsClick}
+            className="group rounded-full bg-cyan-400/90 px-6 py-3 font-semibold text-slate-900 shadow-lg shadow-cyan-500/30 transition hover:bg-cyan-300"
           >
-            Explore Projects
-          </a>
+            View Top Projects
+          </button>
           <button
             onClick={onContactClick}
-            className="group relative overflow-hidden rounded-full bg-gradient-to-r from-fuchsia-500 via-violet-500 to-blue-500 px-6 py-3 text-sm font-semibold text-white shadow-lg transition focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
+            className="rounded-full border border-white/20 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur transition hover:bg-white/10"
           >
-            <span className="relative z-10">Contact Me</span>
-            <span className="absolute inset-0 translate-y-full bg-white/20 transition-transform duration-300 group-active:translate-y-0" />
+            Contact Me
           </button>
         </motion.div>
-        <motion.p
+
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.8, repeat: Infinity, repeatType: 'reverse' }}
-          className="mt-6 text-xs text-zinc-400"
+          transition={{ delay: 1.2, duration: 0.6 }}
+          className="mt-10 text-white/70"
         >
-          Let’s Build the Future Together
-        </motion.p>
+          Immediate access: Find featured projects below or use the floating contact panel on any page.
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default Hero3D;
+}
