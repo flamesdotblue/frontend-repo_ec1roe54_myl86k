@@ -1,28 +1,50 @@
-import { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react';
+import Hero3D from './components/Hero3D';
+import NavigationOrb from './components/NavigationOrb';
+import ContentSections from './components/ContentSections';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selected, setSelected] = useState('about');
+  const [dark, setDark] = useState(true);
+
+  const handleSelect = (id) => {
+    setSelected(id);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const classRoot = useMemo(
+    () =>
+      dark
+        ? 'bg-black text-white'
+        : 'bg-gradient-to-b from-slate-50 via-white to-slate-100 text-slate-900',
+    [dark]
+  );
+
+  useEffect(() => {
+    // smooth scrolling behavior
+    document.documentElement.style.scrollBehavior = 'smooth';
+    return () => {
+      document.documentElement.style.scrollBehavior = '';
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className={`min-h-screen ${classRoot}`}>
+      <ThemeToggle dark={dark} onToggle={() => setDark((v) => !v)} />
+
+      <Hero3D onContactClick={() => handleSelect('contact')} />
+
+      <NavigationOrb selected={selected} onSelect={handleSelect} />
+
+      <ContentSections selected={selected} />
+
+      <footer className="mx-auto mt-16 max-w-7xl px-6 pb-12 text-center text-sm text-zinc-400">
+        <p>© {new Date().getFullYear()} Gullapudi Samanya • Built with love for 3D, AI/ML and Human-Centered Tech.</p>
+      </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
